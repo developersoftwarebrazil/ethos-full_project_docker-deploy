@@ -1,0 +1,27 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{# Título da aba do navegador #}
+{% block title %}
+  {% if subtitle %}{{ subtitle }} | {% endif %}
+  {{ title }} | {{ site_title|default:"ETHOS" }}
+{% endblock %}
+
+{# Branding no topo do admin #}
+{% block branding %}
+  <div id="site-name">
+    <a href="{% url 'admin:index' %}">ETHOS</a>
+  </div>
+{% if user.is_anonymous %}
+  {% include "admin/color_theme_toggle.html" %}
+{% endif %}
+{% endblock %}
+
+{# Remove o menu de navegação global no topo #}
+{% block nav-global %}{% endblock %}
+
+{# Adiciona CSS personalizado #}
+{% block extrahead %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/admin/custom.css' %}">
+{% endblock %}
