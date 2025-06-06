@@ -16,8 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-
+from . import views
 urlpatterns = [
-    path('', include('school_contebras_core_video.urls')),
+    path('', views.home, name='home'),  # rota principal
+    path('videos/', include('school_contebras_core_video.urls')),  # rota para o app
     path('admin/', admin.site.urls),
 ]
