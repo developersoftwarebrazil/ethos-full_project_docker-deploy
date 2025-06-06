@@ -30,8 +30,7 @@ SECRET_KEY = 'django-insecure-kb^n626u=nio@d&@7_e#=^z1uzzkh%)ku3_8)z7nc@aqen#wu(
 DEBUG = True
 
 ALLOWED_HOSTS = [
-#   'host.docker.internal','localhost'
-'*'
+  'host.docker.internal','localhost'
   ]
 
 
@@ -64,7 +63,7 @@ ROOT_URLCONF = 'school_contebras_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR, 'templates'],  # Adiciona o caminho para a pasta templates
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -137,12 +136,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),  # aponta para sua pasta static no projeto
-]
 
-# Para produção (coletar arquivos estáticos em uma pasta):
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

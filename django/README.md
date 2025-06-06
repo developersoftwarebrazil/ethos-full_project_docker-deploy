@@ -1,33 +1,77 @@
+# Projeto CONTEBRAS - Plataforma de streaming de vídeos e gerenciamento do curso
 
-# Imersão Fullcycle 19 - Plataforma de streaming de vídeos
+## Descrição
 
-![Imersão Full Stack && Full Cycle](https://events-fullcycle.s3.amazonaws.com/events-fullcycle/static/site/img/grupo_4417.png)
-
-Participe gratuitamente: https://imersao.fullcycle.com.br/
+Repositório do Django (admin dos vídeos)
 
 ## Requerimentos
 
-Cada projeto tem seus próprios requerimentos, mas uma ferramenta é comum a todos: o Docker.
+Instalar o Python 3.12.6:
 
-### Docker
+- Mac: Baixe direto do site oficial
+- Windows (WSL 2) e Linux: Use o asdf: [https://asdf-vm.com/](). Rode os seguintes comandos:
 
-Dependendo do seu sistema operacional, você tem 2 opções para instalar o Docker:
+```bash
+sudo apt update
 
-- [Docker Desktop] - Interface gráfica para gerenciar e usar o Docker.
-- [Docker Engine] - Apenas a engine do Docker, sem interface gráfica, chamado de Docker Nativo.
+sudo apt-get install build-essential zlib1g-dev libffi-dev libssl-dev libbz2-dev libreadline-dev libsqlite3-dev liblzma-dev 
 
-Se você tem 8GB ou menos de memória RAM, recomendamos o uso do Docker Engine, pois a interface gráfica do Docker Desktop + a execução dos containers pode consumir praticamente a memória da máquina, caso contrário usar o Docker Desktop é mais prático.
-
-Se você quiser saber mais detalhes sobre isto, veja nosso vídeo [https://www.youtube.com/watch?v=99dCerRKO6s](https://www.youtube.com/watch?v=99dCerRKO6s).
-
-Se você estiver no Windows, use o WSL 2. Veja nosso tutorial [https://github.com/codeedu/wsl2-docker-quickstart](https://github.com/codeedu/wsl2-docker-quickstart).
+asdf plugin add python
+asdf install python 3.12.6
+asdf global python 3.12.6
+```
 
 ## Rodar a aplicação
 
-Ao final das aulas teremos todo o projeto, no momento estamos na aula 01 do Django, então, acessar a pasta `django` e siga as instruções.
+Coloque a variável `PIPENV_VENV_IN_PROJECT` no seu `.bashrc` ou `.zshrc`:
+
+```bash
+export PIPENV_VENV_IN_PROJECT=1
+```
+
+Levante os containers do PostgreSQL e PGAdmin:
+
+```bash
+docker-compose up -d
+```
+
+Instale o Pipenv:
+
+```bash
+pip install pipenv
+```
+
+Instale as dependências:
+
+```bash
+pipenv install
+```
+
+A partir daqui, precisamos sempre rodar os comandos dentro do ambiente virtual do Pipenv:
+
+```bash
+pipenv shell
+```
+
+Rode as migrações do Django:
+
+```bash
+python manage.py migrate
+```
+
+Crie um superusuário:
+
+```bash
+python manage.py createsuperuser
+```
+
+Rode o servidor:
+
+```bash
+python manage.py runserver
+```
+
+Acesse o admin em [http://localhost:8000/admin]().
 
 
-## Arquitetura do projeto
 
-![alt text](./arquitetura_projeto.png)# ethos-full_project_docker-deploy
-# ethos-full_project_docker-deploy
