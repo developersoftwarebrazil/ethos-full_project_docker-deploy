@@ -1,3 +1,4 @@
 # Ignorar volume de dados do PostgreSQL
 postgres/.docker/postgres/
 
+*.swp
