@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="pt-br">
   <head>
@@ -8,144 +7,85 @@
     <link rel="stylesheet" href="{% static 'css/admin/login.css' %}" />
   </head>
 
-  <section class="content">
-    <!-- Lado esquerdo: formulário de login -->
-    <div class="welcome-box">
-      <div class="welcome-box-content">
-        <h1 class="title">Login</h1>
-        <h2 class="title-home">ETHOS</h2>
+  <body>
+    <section class="content">
+      <!-- Lado esquerdo: formulário de login -->
+      <div class="welcome-box">
+        <div class="welcome-box-content">
+          <h1 class="title">Login</h1>
+          <h2 class="title-home">ETHOS</h2>
 
-        <!-- Formulário de login -->
-        <form method="POST" action="">
-          {% csrf_token %}
-          <div class="form-group">
-            <label for="id_username">Usuário</label>
-            {{ form.username }}
-          </div>
-          <div class="form-group">
-            <label for="id_password">Senha</label>
-            {{ form.password }}
-          </div>
-          <button type="submit" class="enter-btn">Entrar</button>
-        </form>
-        
-      </div>
-    </div>
+          <!-- Formulário de login com validações Django -->
+          <form method="POST" action="">
+            {% csrf_token %}
 
-    <!-- Lado direito: apresentação -->
-    <div class="presentation">
-      <h2>Ethos</h2>
-      <p>cursos integrados</p>
-      <h3>Apresenta</h3>
-      <div class="cpac">
-        <span>C</span>
-        <span>P</span>
-        <span>A</span>
-        <span>C</span>
-      </div>
-      <p>CURSO DE PSICANÁLISE E ANÁLISES CLÍNICA</p>
-      <div class="blockquote">
-        <blockquote>
-          <span>Velhos universos,</span>
-          <span>novas dimensões</span>
-        </blockquote>
-      </div>
-      <div class="overlay"></div>
-    </div>
+            {% if form.non_field_errors %}
+              <div class="form-errors">
+                {% for error in form.non_field_errors %}
+                  <p class="errornote">{{ error }}</p>
+                {% endfor %}
+              </div>
+            {% endif %}
 
-    <div class="presenterImage"></div>
-    <div class="background-image"></div>
-  </section>
+            <div class="form-group">
+              <label for="{{ form.username.id_for_label }}">Usuário</label>
+              {{ form.username }}
+              {% for error in form.username.errors %}
+                <div class="errornote">{{ error }}</div>
+              {% endfor %}
+            </div>
+
+            <div class="form-group">
+              <label for="{{ form.password.id_for_label }}">Senha</label>
+              {{ form.password }}
+              {% for error in form.password.errors %}
+                <div class="errornote">{{ error }}</div>
+              {% endfor %}
+            </div>
+
+            {% if next %}
+              <input type="hidden" name="next" value="{{ next }}">
+            {% endif %}
+
+            <button type="submit" class="enter-btn">Entrar</button>
+          </form>
+
+          {% url 'admin_password_reset' as password_reset_url %}
+          {% if password_reset_url %}
+            <div class="password-reset-link">
+              <a href="{{ password_reset_url }}">Esqueceu sua senha?</a>
+            </div>
+          {% endif %}
+
+          <p>
+            <strong>Cadastre-se</strong><br />
+            Ainda não possui uma conta? <br />Cadastre-se no site.
+          </p>
+
+          <a href="/cadastro/" class="site-register-btn">CADASTRE-SE NO SITE</a>
+        </div>
+      </div>
+
+      <!-- Lado direito: apresentação -->
+      <div class="presentation">
+        <h2>Ethos</h2>
+        <p>cursos integrados</p>
+        <h3>Apresenta</h3>
+        <div class="cpac">
+          <span>C</span><span>P</span><span>A</span><span>C</span>
+        </div>
+        <p>CURSO DE PSICANÁLISE E ANÁLISES CLÍNICA</p>
+        <div class="blockquote">
+          <blockquote>
+            <span>Velhos universos,</span>
+            <span>novas dimensões</span>
+          </blockquote>
+        </div>
+        <div class="overlay"></div>
+      </div>
+
+      <div class="presenterImage"></div>
+      <div class="background-image"></div>
+    </section>
+  </body>
 </html>
-
-{% comment %} {% extends "admin/base_site.html" %} {% load i18n static %} {%
-block extrastyle %} {{ block.super }}
-<link rel="stylesheet" href="{% static 'css/admin/login.css' %}" />
-{{ form.media }} {% endblock %} {% block bodyclass %}login{% endblock %} {%
-block usertools %}{% endblock %} {% block nav-global %}{% endblock %} {% block
-nav-sidebar %}{% endblock %} {% block content_title %}{% endblock %} {% block
-nav-breadcrumbs %}{% endblock %} {% block content %} {% if form.errors and not
-form.non_field_errors %}
-<p class="errornote">
-  {% blocktranslate count counter=form.errors.items|length %} Please correct the
-  error below. {% plural %} Please correct the errors below. {%
-  endblocktranslate %}
-</p>
-{% endif %} {% if form.non_field_errors %} {% for error in form.non_field_errors
-%}
-<p class="errornote">{{ error }}</p>
-{% endfor %} {% endif %} {% if user.is_authenticated %}
-<p class="errornote">
-  {% blocktranslate trimmed %} You are authenticated as {{ username }}, but are
-  not authorized to access this page. Would you like to login to a different
-  account? {% endblocktranslate %}
-</p>
-{% endif %}
-
-<section class="content">
-  <div class="welcome-box">
-    <div class="welcome-box-content">
-      <h1 style="color: white; font-size: 2rem">
-        <span style="color: red">L</span>ogin
-      </h1>
-      <h3>👋 Bem-vindo à Plataforma</h3>
-      <h2 class="title-home">ETHOS</h2>
-      <p>Acesse o painel de administração da escola.</p>
-
-      <form
-        method="post"
-        action="{{ app_path }}"
-        id="login-form"
-        class="login-form"
-      >
-        {% csrf_token %}
-        <div class="form-group">
-          {{ form.username.label_tag }} {{ form.username }}
-        </div>
-        <div class="form-group">
-          {{ form.password.label_tag }} {{ form.password }}
-        </div>
-        <input type="hidden" name="next" value="{{ next }}" />
-        <button type="submit" class="admin-btn">
-          {% translate 'Log in' %}
-        </button>
-      </form>
-
-      {% url 'admin_password_reset' as password_reset_url %} {% if
-      password_reset_url %}
-      <div class="password-reset-link">
-        <a href="{{ password_reset_url }}"
-          >{% translate 'Forgotten your password or username?' %}</a
-        >
-      </div>
-      {% endif %}
-
-      <p>
-        <strong>Cadastre-se</strong><br />Ainda não possui uma conta?
-        Cadastre-se no site.
-      </p>
-      <a href="/cadastro/" class="cadastro-btn">CADASTRE-SE NO SITE</a>
-    </div>
-  </div>
-
-  <div class="presentation">
-    <h2>Ethos</h2>
-    <p>cursos integrados</p>
-    <h3>Apresenta</h3>
-    <div class="cpac">
-      <span>C</span><span>P</span><span>A</span><span>C</span>
-    </div>
-    <p>CURSO DE PSICANÁLISE E ANÁLISES CLÍNICA</p>
-    <div class="blockquote">
-      <blockquote>
-        <span>Velhos universos,</span>
-        <span>novas dimensões</span>
-      </blockquote>
-    </div>
-    <div class="overlay"></div>
-  </div>
-
-  <div class="presenterImage"></div>
-  <div class="background-image"></div>
-</section>
-{% endblock %} {% endcomment %}

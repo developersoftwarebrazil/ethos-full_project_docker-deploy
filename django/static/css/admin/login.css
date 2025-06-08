@@ -156,11 +156,11 @@ p {
 }
 
 .welcome-box {
+  display: flex;
   position: relative;
   background: rgba(255, 255, 255, 0.8);
   padding: 0.5rem;
-  display: flex;
-  justify-content: center;
+  justify-content: left;
   margin: 0; /* Remover centralização */
 }
 
@@ -170,7 +170,7 @@ p {
   min-width: 25rem;
   padding: 0 1.5rem;
   background-color: #003366;
-  border: .25rem solid #fb1;
+  border: 0.25rem solid #fb1;
   border-radius: 20% 0;
   color: #fcffff;
   display: flex;
@@ -187,11 +187,12 @@ p {
   padding: 0.75rem 2rem;
   background-color: #fb1;
   color: #000003;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
   text-decoration: none;
   font-weight: bold;
   width: fit-content;
-  border:#fb1;
+  border: #fb1;
+  margin: 1rem 0;
 }
 
 .enter-btn:hover {
@@ -202,21 +203,44 @@ p {
 input {
   display: flex;
   padding: 0.5rem;
+  min-width: 15rem;
   width: 100%;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   border: 1px solid #fb1;
   margin-bottom: 1rem;
 }
 
 label {
   display: flex;
-  margin-bottom: .25rem;
+  margin-bottom: 0.25rem;
 }
 
 button:hover {
   background-color: #3b5998;
 }
+.errornote {
+  color: #ff4444;
+  font-size: 0.9rem;
+  margin: 0.25rem 0 0.5rem 0;
+  font-family: "Inter", sans-serif;
+}
 
+.form-errors {
+  margin-bottom: 1rem;
+}
+
+.password-reset-link {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+.password-reset-link a {
+  color: #fb1;
+  text-decoration: underline;
+}
+.site-register-btn {
+  color: #fb3;
+  padding: 1rem;
+}
 .presenterImage {
   position: absolute;
   right: -10rem;
