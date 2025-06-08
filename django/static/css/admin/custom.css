@@ -15,7 +15,7 @@ html[data-theme="light"],
   --body-loud-color: ##000003;
 
   --header-color: var(--accent);
-  --header-branding-color: var(--accent);
+  --header-branding-color: var(--body-loud-color);
   --header-bg: var(--secondary);
   --header-link-color: var(--primary-fg);
 
@@ -304,6 +304,7 @@ tfoot td {
   padding: 5px 10px;
   font-size: 0.6875rem;
   background: var(--body-bg);
+  background: red;
   border: none;
   border-top: 1px solid var(--hairline-color);
   border-bottom: 1px solid var(--hairline-color);

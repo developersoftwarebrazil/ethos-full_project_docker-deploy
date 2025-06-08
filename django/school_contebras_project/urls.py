@@ -16,9 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.contrib.auth import views as auth_views  # <-- ESTA LINHA É ESSENCIAL
 from . import views
+
 urlpatterns = [
-    path('', views.home, name='home'),  # rota principal
-    path('videos/', include('school_contebras_core_video.urls')),  # rota para o app
+    path('', views.home, name='home'),
+    path('videos/', include('school_contebras_core_video.urls')),
+    path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('admin/', admin.site.urls),
 ]
