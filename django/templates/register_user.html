@@ -3,20 +3,18 @@
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
-    <title>ETHOS | Login</title>
+    <title>ETHOS | Criar Conta</title>
     <link rel="stylesheet" href="{% static 'css/admin/login.css' %}" />
   </head>
 
   <body>
     <section class="content">
-      <!-- Lado esquerdo: formulário de login -->
       <div class="welcome-box">
         <div class="welcome-box-content">
-          <h1 class="title">Login</h1>
+          <h1 class="title">Criar Conta</h1>
           <h2 class="title-home">ETHOS</h2>
 
-          <!-- Formulário de login com validações Django -->
-          <form method="POST" action="">
+          <form method="POST">
             {% csrf_token %}
 
             {% if form.non_field_errors %}
@@ -36,37 +34,39 @@
             </div>
 
             <div class="form-group">
-              <label for="{{ form.password.id_for_label }}">Senha</label>
-              {{ form.password }}
-              {% for error in form.password.errors %}
+              <label for="{{ form.email.id_for_label }}">Email</label>
+              {{ form.email }}
+              {% for error in form.email.errors %}
                 <div class="errornote">{{ error }}</div>
               {% endfor %}
             </div>
 
-            {% if next %}
-              <input type="hidden" name="next" value="{{ next }}">
-            {% endif %}
+            <div class="form-group">
+              <label for="{{ form.password1.id_for_label }}">Senha</label>
+              {{ form.password1 }}
+              {% for error in form.password1.errors %}
+                <div class="errornote">{{ error }}</div>
+              {% endfor %}
+            </div>
 
-            <button type="submit" class="enter-btn">Entrar</button>
+            <div class="form-group">
+              <label for="{{ form.password2.id_for_label }}">Confirme a senha</label>
+              {{ form.password2 }}
+              {% for error in form.password2.errors %}
+                <div class="errornote">{{ error }}</div>
+              {% endfor %}
+            </div>
+
+            <button type="submit" class="enter-btn">Cadastrar</button>
           </form>
 
-          {% url 'admin_password_reset' as password_reset_url %}
-          {% if password_reset_url %}
-            <div class="password-reset-link">
-              <a href="{{ password_reset_url }}">Esqueceu sua senha?</a>
-            </div>
-          {% endif %}
-
           <p>
-            <strong>Cadastre-se</strong><br />
-            Ainda não possui uma conta? <br />Cadastre-se no site.
+            <strong>Já tem uma conta?</strong><br />
+            <a href="/login/" class="site-register-btn">FAÇA LOGIN</a>
           </p>
-
-          <a href="/register/" class="site-register-btn">CADASTRE-SE NO SITE</a>
         </div>
       </div>
 
-      <!-- Lado direito: apresentação -->
       <div class="presentation">
         <h2>Ethos</h2>
         <p>cursos integrados</p>

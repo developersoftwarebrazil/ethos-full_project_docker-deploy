@@ -23,5 +23,9 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('videos/', include('school_contebras_core_video.urls')),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
+    path('register/', views.register_user, name='register_user'),
+
     path('admin/', admin.site.urls),
+
+  
 ]
