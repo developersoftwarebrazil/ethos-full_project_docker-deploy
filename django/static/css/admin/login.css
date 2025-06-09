@@ -4,7 +4,7 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
 }
 .title {
   font-family: "Inter", sans-serif;
@@ -43,7 +43,7 @@ p {
   position: relative;
   display: flex;
   justify-content: center;
-  height: 100vh;
+  min-height: 100vh; */
   width: 100vw;
   overflow: hidden;
   font-family: "Open Sans", "Chathura", "Inter", "Roboto", sans-serif;
@@ -54,7 +54,7 @@ p {
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   background: url("../../assets/imgs/foto-estante-livros.jpg") no-repeat center
     center;
   background-size: cover;
@@ -162,6 +162,8 @@ p {
   padding: 0.5rem;
   justify-content: left;
   margin: 0; /* Remover centralização */
+  flex-grow: 1;
+ flex-wrap: wrap; /* para quebrar se precisar */
 }
 
 .welcome-box-content {
@@ -178,8 +180,17 @@ p {
   justify-content: center;
   align-items: center;
   text-align: center;
-}
 
+    /* Adicionados */
+  box-sizing: border-box;
+  flex-grow: 1;
+}
+.welcome-box p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+  color: #fcffff;
+}
 .enter-btn {
   display: flex;
   justify-content: center;
@@ -242,7 +253,7 @@ button:hover {
   padding: 1rem;
 }
 .presenterImage {
-  position: absolute;
+  /* position: absolute; */
   right: -10rem;
   bottom: 0;
   height: 80%;
@@ -255,11 +266,12 @@ button:hover {
 }
 
 .background-image {
-  position: absolute;
+  /* position: absolute; */
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+  flex-grow: 1;
   background: url("/static/assets/imgs/foto-estante-livros.jpg") no-repeat
     center center;
   background-size: cover;
