@@ -11,7 +11,7 @@ export function SearchBar() {
         id="search"
         name="search"
         placeholder="Pesquisar"
-        className="w-full py-2 px-4 bg-primary border-secondary border-2 rounded-full focus:outline-none focus:ring-2 focus:ring-secondary text-primary"
+        className="w-full py-2 px-4 bg-primary border-secondary border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary text-primary"
         defaultValue={searchParams.get("search") || ""}
       />
       <button className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600">

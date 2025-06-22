@@ -6,18 +6,6 @@ Repositório do Next.js (front-end dos vídeos)
 
 ## Rodar a aplicação
 
-Levante o container do Next.js:
-
-```bash
-docker-compose up -d
-```
-
-Entre no container do Next.js:
-
-```bash
-docker-compose exec nextjs bash
-```
-
 Instale as dependências:
 
 ```bash

@@ -7,7 +7,7 @@ export function Navbar() {
       <div className="container mx-auto px-4 py-2 flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <Link href="/" className="text-2xl font-bold text-[#ffcd00]">
-            FCTube
+            CONTEBRAS
           </Link>
         </div>
 

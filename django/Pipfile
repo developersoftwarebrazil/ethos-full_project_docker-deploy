@@ -8,8 +8,9 @@ pillow = "10.4.0"
 psycopg2-binary = "2.9.9"
 kombu = "*"
 dj-database-url = "2.3.0"
-djangorestframework = "*"
 django = "*"
+djangorestframework = "*"
+django-extensions = "*"
 
 [dev-packages]
 

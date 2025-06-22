@@ -16,9 +16,8 @@
           <h2 class="title-home">ETHOS</h2>
 
           <!-- Formulário de login com validações Django -->
-          <form method="POST" action="">
+          <form method="POST" action="{% url 'login' %}">
             {% csrf_token %}
-
             {% if form.non_field_errors %}
               <div class="form-errors">
                 {% for error in form.non_field_errors %}
@@ -44,7 +43,7 @@
             </div>
 
             {% if next %}
-              <input type="hidden" name="next" value="{{ next }}">
+              <input type="hidden" name="next" value="{{ next }}" />
             {% endif %}
 
             <button type="submit" class="enter-btn">Entrar</button>

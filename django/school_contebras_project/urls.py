@@ -13,19 +13,31 @@ Class-based views
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
+# """
+
 from django.contrib import admin
-from django.urls import include, path
-from django.contrib.auth import views as auth_views  # <-- ESTA LINHA É ESSENCIAL
-from . import views
+from django.urls import path, include
 
 urlpatterns = [
-    path('', views.home, name='home'),
-    path('videos/', include('school_contebras_core_video.urls')),
-    path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
-    path('register/', views.register_user, name='register_user'),
-
+    path('', include('school_contebras_core_video.urls')),
     path('admin/', admin.site.urls),
+]
+# from django.contrib import admin
+# from django.urls import include, path
+# from django.contrib.auth import views as auth_views  # <-- ESTA LINHA É ESSENCIAL
+# from . import views
+
+# urlpatterns = [
+#     path('', views.home, name='home'),
+#     # path('videos/', include('school_contebras_core_video.urls')),
+#     path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
+#     path('register/', views.register_user, name='register_user'),
+
+#     path('admin/', admin.site.urls),
+#     # path('api/', include('school_contebras_core_video.urls')),
+#     path('api/videos/', include('school_contebras_core_video.urls'))
+
+
 
   
-]
+# ]
