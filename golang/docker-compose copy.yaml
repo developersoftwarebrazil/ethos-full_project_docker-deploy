@@ -1,25 +1,15 @@
 include:
   - ../postgres/docker-compose.yaml
   - ../rabbitmq/docker-compose.yaml
-
+  
 services:
   go_app_dev:
     build:
       context: .
       dockerfile: Dockerfile
-    restart: always
-    command: >
-     bash -c "
-        echo '⏳ Aguardando RabbitMQ na porta 5672...';
-        while ! nc -z rabbitmq 5672; do
-          sleep 2;
-        done;
-        echo '✅ RabbitMQ disponível, iniciando Go worker...';
-        cd /app && go run cmd/videoconverter/main.go
-      "
     volumes:
-      - .:/app
-      - external-storage:/media/uploads
+      - .:/app # Mount the local app directory for live development
+      - external-storage:/media/uploads # Mount external storage volume
     tty: true
     stdin_open: true
     ports:
@@ -40,6 +30,7 @@ services:
     depends_on:
       - postgres
       - rabbitmq
+
 
 volumes:
   external-storage:

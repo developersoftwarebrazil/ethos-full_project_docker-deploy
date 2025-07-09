@@ -9,12 +9,12 @@ DEFAULT_VOLUME_NAME="external-storage"
 VOLUME_NAME="$DEFAULT_VOLUME_NAME"
 
 # =======================
-# 📦 Verificação/Criação de volume Docker externo
+# 📦 Verificação/Criação de volume Docker externo (interativo)
 # =======================
 check_or_create_external_volume() {
     local volume_name=$1
-    echo "🗃️ Verificando volume externo Docker '$volume_name'..."
 
+    echo "🗃️ Verificando volume externo Docker '$volume_name'..."
     if docker volume inspect "$volume_name" >/dev/null 2>&1; then
         echo "✅ Volume externo '$volume_name' já existe."
     else
@@ -29,8 +29,10 @@ check_or_create_external_volume() {
     export VOLUME_NAME="$volume_name"
 }
 
+check_or_create_external_volume "$VOLUME_NAME"
+
 # =======================
-# ⚙️ Utilitários
+# ⚙️ Funções utilitárias
 # =======================
 run_or_fail() {
     echo "⚙️ Executando: $1"
@@ -52,48 +54,28 @@ wait_for_container() {
 kill_port() {
     local port=$1
     echo "🔧 Tentando liberar porta $port (se necessário)..."
-
-    if command -v lsof >/dev/null; then
-        lsof -ti tcp:$port | xargs -r kill -9 || true
-    fi
-
-    if command -v fuser >/dev/null; then
-        fuser -k ${port}/tcp || true
-    fi
-
-    # Extra: se estiver usando WSL
-    if grep -qi microsoft /proc/version && command -v netstat >/dev/null; then
-        pid=$(netstat -ano | grep ":$port" | grep LISTEN | awk '{print $NF}' | head -n 1)
-        if [ -n "$pid" ]; then
-            echo "💀 Matando processo $pid (WSL)..."
-            kill -9 "$pid" || true
-        fi
-    fi
-}
-
-kill_django_background() {
-    echo "🧹 Finalizando processos Django travados..."
-    ps aux | grep runserver | grep -v grep | awk '{print $2}' | xargs -r kill -9 || true
+    lsof -ti tcp:$port | xargs -r kill -9 || true
+    fuser -k ${port}/tcp || true
 }
 
 # =======================
 # 🚀 Execução principal
 # =======================
-check_or_create_external_volume "$VOLUME_NAME"
-
 echo "🔪 Finalizando processos que podem estar usando as portas necessárias..."
 kill_port 8000
 kill_port 3000
 kill_port 3001
 kill_port 3002
-kill_django_background
 
-echo "🔧 Parando containers existentes e limpando..."
+echo "🔧 Parando containers existentes..."
+
 docker compose down -v --remove-orphans
 docker system prune -a --volumes -f
+
+echo "🔧 Limpando imagens antigas..."
 docker image prune -f || true
 
-echo "🔧 Subindo containers com Docker Compose..."
+echo "🔧 Subindo containers..."
 docker compose up -d --build
 
 wait_for_container django
@@ -123,8 +105,14 @@ if not User.objects.filter(email='admin@user.com').exists():
     User.objects.create_superuser('admin1', 'admin@user.com', 'secret')
 \""
 
+echo "📦 Iniciando o django admin."
+docker compose exec -T django bash -c "pipenv run python manage.py runserver 0.0.0.0:8000"
+
 wait_for_container go_app_dev
 wait_for_container nextjs
+
+echo "📦 Iniciando o nextjs..."
+docker compose exec -T nextjs bash -c "npm run dev"
 
 echo "🎬 Iniciando consumidor Django - Upload Chunks (em background)..."
 docker compose exec -T django bash -c "pipenv run python manage.py consumer_upload_chunks_to_external_storage" &
@@ -137,5 +125,5 @@ sleep 5
 echo ""
 echo "✅ Ambiente pronto! Logs a seguir:"
 echo ""
-
-docker compose logs -f django go_app_dev nextjs
+./
+docker compose logs -f django django_consumer_register_processed django_consumer_upload_chunks go_app_dev nextjs postgres rabbitmq pgadmin

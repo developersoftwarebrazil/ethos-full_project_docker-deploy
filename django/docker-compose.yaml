@@ -1,18 +1,10 @@
-include:
-  - ../postgres/docker-compose.yaml
-  - ../rabbitmq/docker-compose.yaml
-  - ../nginx/docker-compose.yaml
-
 services:
-
   django:
     build: .
     ports:
-    
       - 8000:8000
     environment:
       - DATABASE_URL=postgres://postgres:root@postgres:5432/django_videos
-      #- DATABASE_URL=sqlite:///db.sqlite3\
       - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
       - ASSETS_URL=http://host.docker.internal:9000/media/uploads
     volumes:
@@ -20,7 +12,55 @@ services:
       - external-storage:/media/uploads
     extra_hosts:
       - host.docker.internal:host-gateway
-    
+    restart: always
+    command: >
+      bash -c "
+        cd /home/my-user/app &&
+        pipenv install &&
+        pipenv run python manage.py migrate &&
+        pipenv run python manage.py createsuperuser --noinput --username admin1 --email admin@user.com || true &&
+        pipenv run python manage.py runserver 0.0.0.0:8000
+      "
+    depends_on:
+      - postgres
+      - rabbitmq
+
+  django_consumer_upload_chunks:
+    build: .
+    volumes:
+      - .:/home/my-user/app
+      - external-storage:/media/uploads
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    restart: always
+    depends_on:
+      - django
+    command: >
+      bash -c "
+        echo '⏳ Aguardando RabbitMQ na porta 5672...';
+        while ! nc -z rabbitmq 5672; do sleep 2; done;
+        echo '✅ RabbitMQ disponível, iniciando consumidor upload chunks...';
+        cd /home/my-user/app && pipenv install && pipenv run python manage.py consumer_upload_chunks_to_external_storage
+      "
+
+  django_consumer_register_processed:
+    build: .
+    volumes:
+      - .:/home/my-user/app
+      - external-storage:/media/uploads
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    restart: always
+    depends_on:
+      - django
+    command: >
+      bash -c "
+        echo '⏳ Aguardando RabbitMQ na porta 5672...';
+        while ! nc -z rabbitmq 5672; do sleep 2; done;
+        echo '✅ RabbitMQ disponível, iniciando consumidor registro processamento...';
+        cd /home/my-user/app && pipenv install && pipenv run python manage.py consumer_register_processed_video_path
+      "
+
   change_media_permission:
     build: .
     user: root
@@ -29,18 +69,7 @@ services:
       - external-storage:/media/uploads
     depends_on:
       - django
-  
-  
 
 volumes:
   external-storage:
     external: true
-
-# Windows - WSL
-
-# C:\Windows\System32\drivers\etc\hosts (bloco em notas admin)
-
-#Mac ou Linux
-# /etc/hosts 
-
-# 127.0.0.1 host.docker.internal
